@@ -1,0 +1,137 @@
+// -- variables --
+$boxLeft: 20px;
+$boxGap: 140px;
+$boxTopEnd: 500px;
+
+// -- mixins for CSS animation/transition --
+@mixin animation($value) {
+	-moz-animation: #{$value};
+	-o-animation: #{$value};
+	-webkit-animation: #{$value};
+	animation: #{$value};
+}
+
+@mixin keyframes($name) {
+	@-moz-keyframes #{$name} { @content; }
+	@-o-keyframes #{$name} { @content; }
+	@-webkit-keyframes #{$name} { @content; }
+	@keyframes #{$name} { @content; }
+}
+
+@mixin transition($value) {
+	-moz-transition: #{$value};
+	-o-transition: #{$value};
+	-webkit-transition: #{$value};
+	transition: #{$value};
+}
+
+// -- base --
+input {
+	font-size: 100%;
+	margin: 0;
+}
+
+body,
+input {
+	color: #000;
+	font-family: sans-serif;
+}
+
+body {
+	background: #fff;
+	font-size: 62.5%;
+	line-height: 1;
+	margin-left: $boxLeft;
+	margin-right: $boxLeft;
+}
+
+h1 {
+	font-size: 3em;
+	margin: 0 0 20px;
+	white-space: nowrap;
+}
+
+p {
+	font-size: 1.3em;
+	line-height: 1.4;
+	margin: 0 0 15px;
+	max-width: 700px;
+}
+
+p > strong {
+	white-space: nowrap;
+}
+
+a {
+	color: #555;
+}
+
+// -- boxes --
+.boxanimation,
+.boxtransition1,
+.boxtransition2 {
+	border: 1px solid #000;
+	height: 100px;
+	left: $boxLeft;
+	position: absolute;
+	top: 260px;
+	width: 100px;
+
+	// add a red box to each box as it's animating
+	&.cssanimactive {
+		border: 1px solid #f00;
+	}
+}
+
+// -- boxes - animation --
+.boxanimation {
+	background: #b2382d;
+
+	&.move {
+		@include animation('boxanimation 1s ease-in-out 0s 3 alternate forwards');
+	}
+
+	// for browsers that don't support animation, place box at intended end position
+	&.complete {
+		left: $boxLeft;
+		top: $boxTopEnd;
+	}
+}
+
+@include keyframes('boxanimation') {
+	20% {
+		left: 40px;
+		top: 310px;
+	}
+
+	40% {
+		left: 140px;
+		top: 400px;
+	}
+
+	60% {
+		background: #ffc787;
+	}
+
+	100% {
+		background: #e89041;
+		top: $boxTopEnd;
+	}
+}
+
+// -- boxes - transition --
+.boxtransition1,
+.boxtransition2 {
+	background: #f2df7e;
+	left: ($boxLeft + $boxGap);
+	@include transition('background 0.5s linear,top 0.5s ease-in');
+
+	&.move {
+		background: #314a59;
+		top: $boxTopEnd;
+	}
+}
+
+.boxtransition2 {
+	left: ($boxLeft + ($boxGap * 2));
+}

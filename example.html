@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+	<title>CSS animation event example</title>
+
+	<link rel="stylesheet" href="example.css" />
+	<link rel="stylesheet" href="consolefaux.css" />
+
+	<script src="cssanimevent.js"></script>
+	<script src="example.js"></script>
+	<script src="consolefaux.js"></script>
+</head>
+
+<body>
+
+	<div id="consolefaux"></div>
+
+	<div id="page">
+
+		<h1>CSS animation event example</h1>
+
+		<p>
+			Upon start first box will start animating, followed by transitions of box two and three.
+			Box animations and transitions chained using <strong>onAnimationEnd()</strong> and <strong>onTransitionEnd()</strong> methods.
+			For browsers that don't support CSS3 animation or transition, faux end callbacks will be fired by cssanimevent.js.
+			View browser developer console for further debug output.<br />
+
+			<a href="http://github.com/magnetikonline/cssanimevent">http://github.com/magnetikonline/cssanimevent</a>
+		</p>
+
+		<p>
+			<input type="button" id="startexample" value="Start example" />
+		</p>
+
+		<div id="boxanim" class="boxanimation"></div>
+
+		<div id="boxtran1" class="boxtransition1"></div>
+
+		<div id="boxtran2" class="boxtransition2"></div>
+
+	</div>
+
+</body>
+</html>
