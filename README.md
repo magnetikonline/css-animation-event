@@ -72,7 +72,7 @@ function nextUIStep() {
 
 One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` create 'one shot' event handlers and should be called just after CSS updates have been made to the element and allowing for instant deligation to the callback handler for unsupported browsers.
 
-Internally `CSSAnimEvent` creates singular `animationend` and `transitionend` handlers on the document `<body>` and delegates to callbacks as required.
+Internally `CSSAnimEvent` attaches singular `animationend` and `transitionend` event handlers on the documents `<html/>` element and delegates to given callbacks as required.
 
 Using CSS3 `animation/@keyframes` is *slightly* more work since animated elements will never reach their keyframe target with unsupported browsers, but a little CSS/JavaScript can handle this situation:
 
