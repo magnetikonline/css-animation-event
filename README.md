@@ -6,11 +6,11 @@ A very small (approx **850 bytes** minified and gzip) cross browser library to h
 - [Methods](#methods)
 
 ## Why?
-The CSS3 [Animation](http://www.w3.org/TR/css3-animations/) and [Transition](http://www.w3.org/TR/css3-transitions/) modules both provide some rather useful DOM events which can be used to track the current state of an animation/transition from within your JavaScript for chaining further application logic as they progress and complete.
+The CSS3 [animation](http://www.w3.org/TR/css3-animations/) and [transition](http://www.w3.org/TR/css3-transitions/) modules both provide some rather useful DOM events which can be used to track the current state of an animation/transition from within your JavaScript for chaining further application logic as they progress and complete.
 
 Whilst support for these event types is (thankfully) provided in virtually every browser that offers CSS3 animations and transitions, as a front-end developer you are still left with the issue of coding alternative program flow around browsers that don't support these CSS3 modules and therefore won't fire your animation/transition events.
 
-Consider the following CSS and JavaScript code as an example:
+Consider the following example:
 
 ```css
 #movethis {
@@ -46,12 +46,14 @@ function nextUIStep() {
 }
 ```
 
-Having to make the decision (`supportCSSTransitions`) to handle the use of DOM events versus a fall back continually throughout your UI code soon becomes clumsy and bloated as your use of CSS3 animations and/or transitions in your application grows.
+Having to continually make the decision to utilize DOM events versus a fall back (`supportCSSTransitions`) throughout your UI code soon becomes clumsy and error prone.
 
 ## Usage
-**CSSAnimEvent** handles the above situation in a different way - relying on the fact that CSS3 transitions by design fall back gracefully, basically the DOM element path from start to finish is instant (zero transition time) the methods `CSSAnimEvent.onAnimationEnd(el,endHandler)` and `CSSAnimEvent.onTransitionEnd(el,endHandler)` mimic this behaviour by instantly calling the given `endHandler` for browsers that don't have animation and/or transition support.
+[CSSAnimEvent](cssanimevent.js) manages the above situation in a different way, relying on the fact that CSS3 transitions by design fall back gracefully with unsupported browsers handling element CSS property changes as instant, with a zero transition time.
 
-Thus, to rewrite the above JavaScript example we can now do:
+Methods `CSSAnimEvent.onAnimationEnd(el,endHandler)` and `CSSAnimEvent.onTransitionEnd(el,endHandler)` simply mimic this behaviour by instantly calling the given `endHandler` for browsers that don't provide animation and/or transition support.
+
+Rewriting the above JavaScript example we can now do:
 
 ```js
 // move our element
@@ -59,7 +61,7 @@ var moveThisEl = document.getElementById('movethis');
 moveThisEl.className += ' nowmove';
 
 // Browsers supporting CSS3 transitions will call nextUIStep() after the transition ends
-// ...otherwise it will be called upon window.setTimeout(nextUIStep)
+// ...otherwise it will be called as window.setTimeout(nextUIStep)
 CSSAnimEvent.onTransitionEnd(moveThisEl,nextUIStep);
 
 function nextUIStep() {
@@ -68,9 +70,11 @@ function nextUIStep() {
 }
 ```
 
-**Note:** this does mean that all calls to `onAnimationEnd()/onTransitionEnd()` are 'one shot' and need to be called just before/after your element has been updated in the DOM. Internally CSSAnimEvent handles this by setting up singular DOM `animationend` and `transitionend` handlers on the document `<body>` and delegates callbacks as required.
+One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` create 'one shot' event handlers and should be called just after CSS updates have been made to the element and allowing for instant deligation to the callback handler for unsupported browsers.
 
-With CSS3 animations it's *slightly* more work since your animated element would never reach it's target for unsupported browsers, but a little CSS/JavaScript will sort this:
+Internally `CSSAnimEvent` creates singular `animationend` and `transitionend` handlers on the document `<body>` and delegates to callbacks as required.
+
+Using CSS3 `animation/@keyframes` is *slightly* more work since animated elements will never reach their keyframe target with unsupported browsers, but a little CSS/JavaScript can handle this situation:
 
 ```css
 @keyframes myanimation {
@@ -114,11 +118,11 @@ function nextUIStep(el) {
 ```
 
 ## Example
-You can view a very [basic example of this in action](http://magnetikonline.github.io/cssanimevent/), with some animation/transition chaining.
+View a very [basic example of this in action](http://magnetikonline.github.io/cssanimevent/) using animation and transition chaining.
 
-For supporting CSS3 animation/transition browsers, the effects will run as expected - otherwise the elements will move instantly from start to finish but still handled by the same end DOM event handlers.
+For CSS3 animation/transition aware browsers, the effects will run as expected - otherwise the elements will move instantly from start to finish but still handled by the same end DOM event handlers.
 
-Finally, CSSAnimEvent uses CSS `className` identifiers upon DOM elements to identify them when animation/transition events fire, which provides a handy CSS styling hook; `.cssanimactive`, during the animation/transition period.
+`CSSAnimEvent` makes use of CSS class identifiers on DOM elements to identify them when animation/transition events fire which provides a handy CSS styling hook; `cssanimactive`, which can be used for styling during the animation/transition.
 
 ```html
 <!-- our element before onAnimationEnd()/onTransitionEnd() -->
@@ -132,10 +136,10 @@ Finally, CSSAnimEvent uses CSS `className` identifiers upon DOM elements to iden
 <div id="movethis" class="movethis-basestyle">
 ```
 
-The example linked above uses this CSS styling hook by adding a red border to each box element during it's animation/transition period.
+The [example page](http://magnetikonline.github.io/cssanimevent/) uses this CSS styling hook to provide a red border to each box element during it's animation/transition period.
 
 ## Methods
-All methods exist under a `window.CSSAnimEvent` namespace.
+All methods are created under a `window.CSSAnimEvent` namespace.
 
 ### onAnimationEnd(el,handler,[data])
 Adds a 'one shot' event handler to the given DOM element, with `handler` executing either upon `animationend` or instantly if CSS3 animation support is not detected.
