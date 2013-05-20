@@ -46,7 +46,7 @@ function nextUIStep() {
 }
 ```
 
-Having to continually make the decision to utilize DOM events versus a fall back (`supportCSSTransitions`) throughout your UI code soon becomes clumsy and error prone.
+Having to continually make the decision to utilise DOM events versus a fall back (`supportCSSTransitions`) throughout your UI code soon becomes clumsy and error prone.
 
 ## Usage
 [CSSAnimEvent](cssanimevent.js) manages the above situation in a different way, relying on the fact that CSS3 transitions by design fall back gracefully with unsupported browsers handling element CSS property changes as instant, with a zero transition time.
@@ -70,7 +70,7 @@ function nextUIStep() {
 }
 ```
 
-One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` create 'one shot' event handlers and should be called just after CSS updates have been made to the element and allowing for instant deligation to the callback handler for unsupported browsers.
+One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` create 'one shot' event handlers and should be called just after CSS updates have been made to the element and allowing for instant delegation to the callback handler for unsupported browsers.
 
 Internally `CSSAnimEvent` attaches singular `animationend` and `transitionend` event handlers on the documents `<html/>` element and delegates to given callbacks as required.
 
@@ -91,7 +91,7 @@ Using CSS3 `animation/@keyframes` is *slightly* more work since animated element
 }
 
 #movethis.nowmove {
-	animation: myanimation 1s linear 1 alternate forwards;
+	animation: myanimation 1s linear 1 forwards;
 }
 
 #movethis.finish {
@@ -120,9 +120,9 @@ function nextUIStep(el) {
 ## Example
 View a very [basic example of this in action](http://magnetikonline.github.io/cssanimevent/) using animation and transition chaining.
 
-For CSS3 animation/transition aware browsers, the effects will run as expected - otherwise the elements will move instantly from start to finish but still handled by the same end DOM event handlers.
+For capable browsers the tweens will run as expected - alternatively the DOM elements will update instantly from start to finish, via the same event handler execution flow.
 
-`CSSAnimEvent` makes use of CSS class identifiers on DOM elements to identify them when animation/transition events fire which provides a handy CSS styling hook; `cssanimactive`, which can be used for styling during the animation/transition.
+`CSSAnimEvent` implements CSS class identifiers on watched elements to uniquely identify them when animation/transition events are raised by the DOM. This provides a handy CSS styling hook; `cssanimactive`, which can be used for specific styling applied only during the animation/transition timeframe.
 
 ```html
 <!-- our element before onAnimationEnd()/onTransitionEnd() -->
