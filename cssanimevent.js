@@ -23,7 +23,7 @@
 		if (isDetected) return;
 		isDetected = true;
 
-		// list of animation/transition style properties per browser engine and matching JavaScript events
+		// collection of animation/transition style properties per browser engine and matching DOM events
 		// non-prefixed properties are intentionally checked first
 		var animationDetectList = [
 				['animation','animationstart','animationiteration','animationend'],
@@ -106,7 +106,7 @@
 
 	function removeAnimItem(handlerCollection,el) {
 
-		// does DOM element already have an animation ID?
+		// DOM element has an animation ID?
 		var animId = getElAnimId(el);
 		if (animId === false) return;
 

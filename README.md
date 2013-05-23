@@ -1,5 +1,5 @@
 # CSS animation event
-A very small (approx **850 bytes** minified and gzip) cross browser library to handle CSS3 animation and transition DOM events with a fall back pattern for unsupported browsers. Tested successfully with Google Chrome, Firefox, Opera (Presto) and IE10.
+A very small (approx **850 bytes** minified and gzip) cross browser compatible library to handle CSS3 animation and transition DOM events with a fall back pattern for unsupported browsers. Tested successfully with Google Chrome, Firefox, Opera (Presto) and IE10.
 
 - [Usage](#usage)
 - [Example](#example)
@@ -70,7 +70,7 @@ function nextUIStep() {
 }
 ```
 
-One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` create 'one shot' event handlers and should be called just after CSS updates have been made to the element and allowing for instant delegation to the callback handler for unsupported browsers.
+One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` create 'one shot' event handlers and should be called *just after* CSS updates have been applied to the element, allowing instant delegation back to the given callback handler for unsupported browsers.
 
 Internally `CSSAnimEvent` attaches singular `animationend` and `transitionend` event handlers on the documents `<html/>` element and delegates to given callbacks as required.
 
