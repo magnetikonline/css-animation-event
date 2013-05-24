@@ -99,8 +99,8 @@
 
 		// remove animation ID class identifer from element
 		el.className =
-			(' ' + el.className).
-			replace(classNameAnimActiveKey + animId,'').
+			(' ' + el.className + ' ').
+			replace(classNameAnimActiveKey + animId + ' ',' ').
 			replace(trimRegExp,'');
 	}
 
@@ -125,7 +125,6 @@
 			if (!handlerCollection) {
 				// setup end handler
 				handlerCollection = {};
-
 				addEvent(docEl,eventTypeEnd,function(e) {
 
 					// ensure event returned the target element
@@ -152,7 +151,7 @@
 
 			// add animation ID class identifer to element
 			el.className =
-				(el.className + classNameAnimActiveKey + (nextAnimId)).
+				(el.className + classNameAnimActiveKey + nextAnimId).
 				replace(trimRegExp,'');
 
 			// add item to handler collection
