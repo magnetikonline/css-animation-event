@@ -70,7 +70,7 @@
 
 		obj.addEventListener(type,handler,false);
 		if (isOperaEventTypeRegExp.test(type)) {
-			// Some earlier versions of Opera (Presto) need lowercased event names
+			// some earlier versions of Opera (Presto) need lowercased event names
 			obj.addEventListener(type.toLowerCase(),handler,false);
 		}
 
@@ -81,7 +81,7 @@
 
 		obj.removeEventListener(type,handler,false);
 		if (isOperaEventTypeRegExp.test(type)) {
-			// Some earlier versions of Opera (Presto) need lowercased event names
+			// some earlier versions of Opera (Presto) need lowercased event names
 			obj.removeEventListener(type.toLowerCase(),handler,false);
 		}
 
@@ -125,13 +125,13 @@
 			if (!handlerCollection) {
 				// setup end handler
 				handlerCollection = {};
-				addEvent(docEl,eventTypeEnd,function(e) {
+				addEvent(docEl,eventTypeEnd,function(event) {
 
 					// ensure event returned the target element
-					if (!e || !e.target) return;
+					if (!event || !event.target) return;
 
 					// get element animation id - exit if not found
-					var targetEl = e.target,
+					var targetEl = event.target,
 						animId = getElAnimId(targetEl);
 
 					// remove animation id, call handler and remove transition end handler from collection

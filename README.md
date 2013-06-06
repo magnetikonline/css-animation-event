@@ -136,7 +136,7 @@ For capable browsers the tweens will run as expected - alternatively the DOM ele
 <div id="movethis" class="movethis-basestyle">
 ```
 
-The [example page](http://magnetikonline.github.io/cssanimevent/) uses this CSS styling hook to provide a red border to each box element during it's animation/transition period.
+The [example page](http://magnetikonline.github.io/cssanimevent/) uses this CSS styling hook to provide a red border to each box during it's animation/transition period.
 
 ## Methods
 All methods are created under a `window.CSSAnimEvent` namespace.
