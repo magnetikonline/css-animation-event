@@ -23,7 +23,7 @@
 		if (isDetected) return;
 		isDetected = true;
 
-		// list of animation/transition style properties per browser engine and matching JavaScript events
+		// collection of animation/transition style properties per browser engine and matching DOM events
 		// non-prefixed properties are intentionally checked first
 		var animationDetectList = [
 				['animation','animationstart','animationiteration','animationend'],
@@ -70,7 +70,7 @@
 
 		obj.addEventListener(type,handler,false);
 		if (isOperaEventTypeRegExp.test(type)) {
-			// Some earlier versions of Opera (Presto) need lowercased event names
+			// some earlier versions of Opera (Presto) need lowercased event names
 			obj.addEventListener(type.toLowerCase(),handler,false);
 		}
 
@@ -81,7 +81,7 @@
 
 		obj.removeEventListener(type,handler,false);
 		if (isOperaEventTypeRegExp.test(type)) {
-			// Some earlier versions of Opera (Presto) need lowercased event names
+			// some earlier versions of Opera (Presto) need lowercased event names
 			obj.removeEventListener(type.toLowerCase(),handler,false);
 		}
 
@@ -99,14 +99,14 @@
 
 		// remove animation ID class identifer from element
 		el.className =
-			(' ' + el.className).
-			replace(classNameAnimActiveKey + animId,'').
+			(' ' + el.className + ' ').
+			replace(classNameAnimActiveKey + animId + ' ',' ').
 			replace(trimRegExp,'');
 	}
 
 	function removeAnimItem(handlerCollection,el) {
 
-		// does DOM element already have an animation ID?
+		// DOM element has an animation ID?
 		var animId = getElAnimId(el);
 		if (animId === false) return;
 
@@ -125,14 +125,13 @@
 			if (!handlerCollection) {
 				// setup end handler
 				handlerCollection = {};
-
-				addEvent(docEl,eventTypeEnd,function(e) {
+				addEvent(docEl,eventTypeEnd,function(event) {
 
 					// ensure event returned the target element
-					if (!e || !e.target) return;
+					if (!event || !event.target) return;
 
 					// get element animation id - exit if not found
-					var targetEl = e.target,
+					var targetEl = event.target,
 						animId = getElAnimId(targetEl);
 
 					// remove animation id, call handler and remove transition end handler from collection
@@ -152,7 +151,7 @@
 
 			// add animation ID class identifer to element
 			el.className =
-				(el.className + classNameAnimActiveKey + (nextAnimId)).
+				(el.className + classNameAnimActiveKey + nextAnimId).
 				replace(trimRegExp,'');
 
 			// add item to handler collection
