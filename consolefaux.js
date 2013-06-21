@@ -1,4 +1,4 @@
-// very basic console messaging system for browsers without native support
+// simple console messaging system for browsers without native support
 (function(win) {
 
 	var consoleFauxEl,
