@@ -1,4 +1,4 @@
-(function(win) {
+(function(win,undefined) {
 
 	var docEl = document.documentElement,
 		isDetected,
@@ -134,11 +134,10 @@
 					var targetEl = event.target,
 						animId = getElAnimId(targetEl);
 
-					// remove animation id, call handler and remove transition end handler from collection
 					if (animId === false) return;
 					removeElAnimId(targetEl,animId);
 
-					// execute handler callback then remove handler data from collection
+					// execute handler then remove from collection
 					var item = handlerCollection[animId];
 					if (item) item[0](item[1],item[2]);
 

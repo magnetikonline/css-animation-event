@@ -141,24 +141,24 @@ The [example page](http://magnetikonline.github.io/cssanimevent/) uses this CSS 
 ## Methods
 All methods are created under a `window.CSSAnimEvent` namespace.
 
-### onAnimationEnd(el,handler,[data])
+### onAnimationEnd(el,handler[,data])
 Adds a 'one shot' event handler to the given DOM element, with `handler` executing either upon `animationend` or instantly if CSS3 animation support is not detected.
 
 The handler will be passed the element that fired the event and an optional `data` payload as the second parameter.
 
 The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon animation completion which can be used as a CSS styling hook.
 
-### cancelAnimationEnd(el)
+### cancelAnimationEnd(element)
 Cancel a 'one shot' event handler set by `onAnimationEnd()` on the given DOM element.
 
-### onTransitionEnd(el,handler,[data])
+### onTransitionEnd(el,handler[,data])
 Adds a 'one shot' event handler to the given DOM element, with `handler` executing either upon `transitionend` or instantly if CSS3 transition support is not detected.
 
 The handler will be passed the element that fired the event and an optional `data` payload as the second parameter.
 
 The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon transition completion which can be used as a CSS styling hook.
 
-### cancelTransitionEnd(el)
+### cancelTransitionEnd(element)
 Cancel a 'one shot' event handler set by `onTransitionEnd()` on the given DOM element.
 
 ### animationSupport()
