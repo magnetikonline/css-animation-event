@@ -51,7 +51,7 @@ Having to continually make the decision to utilise DOM events versus a fall back
 ## Usage
 [CSSAnimEvent](cssanimevent.js) manages the above situation in a different way, relying on the fact that CSS3 transitions by design fall back gracefully with unsupported browsers handling element CSS property changes as instant, with a zero transition time.
 
-Methods `CSSAnimEvent.onAnimationEnd(el,endHandler)` and `CSSAnimEvent.onTransitionEnd(el,endHandler)` simply mimic this behaviour by instantly calling the given `endHandler` for browsers that don't provide animation and/or transition support.
+Methods `onAnimationEnd(element,handler)` and `onTransitionEnd(element,handler)` simply mimic this behaviour by instantaneously calling the given `handler` for browsers that don't provide animation and/or transition support.
 
 Rewriting the above JavaScript example we can now do:
 
@@ -141,25 +141,25 @@ The [example page](http://magnetikonline.github.io/cssanimevent/) uses this CSS 
 ## Methods
 All methods are created under a `window.CSSAnimEvent` namespace.
 
-### onAnimationEnd(el,handler[,data])
-Adds a 'one shot' event handler to the given DOM element, with `handler` executing either upon `animationend` or instantly if CSS3 animation support is not detected.
+### onAnimationEnd(element,handler[,data])
+Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `animationend` or instantly if CSS3 animation support is not detected.
 
-The handler will be passed the element that fired the event and an optional `data` payload as the second parameter.
+The handler will be passed the `element` that fired the event and an optional `data` payload as a second parameter.
 
 The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon animation completion which can be used as a CSS styling hook.
 
 ### cancelAnimationEnd(element)
-Cancel a 'one shot' event handler set by `onAnimationEnd()` on the given DOM element.
+Cancel a 'one shot' event handler set by `onAnimationEnd()` on the given DOM `element`.
 
-### onTransitionEnd(el,handler[,data])
-Adds a 'one shot' event handler to the given DOM element, with `handler` executing either upon `transitionend` or instantly if CSS3 transition support is not detected.
+### onTransitionEnd(element,handler[,data])
+Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `transitionend` or instantly if CSS3 transition support is not detected.
 
-The handler will be passed the element that fired the event and an optional `data` payload as the second parameter.
+The handler will be passed the `element` that fired the event and an optional `data` payload as a second parameter.
 
 The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon transition completion which can be used as a CSS styling hook.
 
 ### cancelTransitionEnd(element)
-Cancel a 'one shot' event handler set by `onTransitionEnd()` on the given DOM element.
+Cancel a 'one shot' event handler set by `onTransitionEnd()` on the given DOM `element`.
 
 ### animationSupport()
 Returns `true` if CSS3 animation support is detected.
@@ -167,22 +167,22 @@ Returns `true` if CSS3 animation support is detected.
 ### transitionSupport()
 Returns `true` if CSS3 transition support is detected.
 
-### addAnimation{Start|Iteration|End}(el,handler)
+### addAnimation{Start|Iteration|End}(element,handler)
 Add `animation{start|iteration|end}` native events to DOM elements. Provides a handy cross browser wrapper having done the browser detection for you. Does not provide any form of faux event firing for non-supported browsers.
 
 Returns `true` on success/support, `false` otherwise.
 
-### removeAnimation{Start|Iteration|End}(el,handler)
+### removeAnimation{Start|Iteration|End}(element,handler)
 Remove `animation{start|iteration|end}` native events for above.
 
 Returns `true` on success/support, `false` otherwise.
 
-### addTransitionEnd(el,handler)
+### addTransitionEnd(element,handler)
 Add `transitionend` native event to DOM elements. Provides a handy cross browser wrapper having done the browser detection for you. Does not provide any form of faux event firing for non-supported browsers.
 
 Returns `true` on success/support, `false` otherwise.
 
-### removeTransitionEnd(el,handler)
+### removeTransitionEnd(element,handler)
 Remove `transitionend` native event for above.
 
 Returns `true` on success/support, `false` otherwise.
