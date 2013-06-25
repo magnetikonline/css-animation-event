@@ -1,5 +1,7 @@
 (function(win,undefined) {
 
+	'use strict';
+
 	var docEl = document.documentElement,
 		isDetected,
 		animationSupport,
@@ -14,7 +16,7 @@
 
 		trimRegExp = /^\s+|\s+$/g,
 		classNameAnimActiveKey = ' cssanimactive cssanim',
-		classNameAnimIdRegExp = new RegExp(classNameAnimActiveKey + '(\\d+)( |$)'),
+		classNameAnimIdRegExp = new RegExp(classNameAnimActiveKey + '([0-9]+)( |$)'),
 		isOperaEventTypeRegExp = /^o(A|T)/;
 
 	function detect() {
