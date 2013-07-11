@@ -4,7 +4,7 @@ input {
   margin: 0;
 }
 
-/* line 35, example.scss */
+/* line 34, example.scss */
 body,
 input {
   color: #000;
@@ -45,7 +45,7 @@ a {
   color: #555;
 }
 
-/* line 72, example.scss */
+/* line 70, example.scss */
 .boxanimation,
 .boxtransition1,
 .boxtransition2 {
@@ -180,15 +180,15 @@ a {
   }
 }
 
-/* line 124, example.scss */
+/* line 123, example.scss */
 .boxtransition1,
 .boxtransition2 {
   background: #f2df7e;
   left: 160px;
-  -moz-transition: background 0.5s linear,top 0.5s ease-in;
-  -o-transition: background 0.5s linear,top 0.5s ease-in;
-  -webkit-transition: background 0.5s linear,top 0.5s ease-in;
-  transition: background 0.5s linear,top 0.5s ease-in;
+  -moz-transition: background 0.5s linear, top 0.5s ease-in;
+  -o-transition: background 0.5s linear, top 0.5s ease-in;
+  -webkit-transition: background 0.5s linear, top 0.5s ease-in;
+  transition: background 0.5s linear, top 0.5s ease-in;
 }
 /* line 129, example.scss */
 .boxtransition1.move,

@@ -5,24 +5,24 @@ $boxTopEnd: 500px;
 
 // -- mixins for CSS animation/transition --
 @mixin animation($value) {
-	-moz-animation: #{$value};
-	-o-animation: #{$value};
-	-webkit-animation: #{$value};
-	animation: #{$value};
+	-moz-animation: $value;
+	-o-animation: $value;
+	-webkit-animation: $value;
+	animation: $value;
 }
 
 @mixin keyframes($name) {
-	@-moz-keyframes #{$name} { @content; }
-	@-o-keyframes #{$name} { @content; }
-	@-webkit-keyframes #{$name} { @content; }
-	@keyframes #{$name} { @content; }
+	@-moz-keyframes $name { @content; }
+	@-o-keyframes $name { @content; }
+	@-webkit-keyframes $name { @content; }
+	@keyframes $name { @content; }
 }
 
-@mixin transition($value) {
-	-moz-transition: #{$value};
-	-o-transition: #{$value};
-	-webkit-transition: #{$value};
-	transition: #{$value};
+@mixin transition($value...) {
+	-moz-transition: $value;
+	-o-transition: $value;
+	-webkit-transition: $value;
+	transition: $value;
 }
 
 // -- base --
@@ -88,7 +88,7 @@ a {
 	background: #b2382d;
 
 	&.move {
-		@include animation('boxanimation 1s ease-in-out 0s 3 alternate forwards');
+		@include animation(boxanimation 1s ease-in-out 0s 3 alternate forwards);
 	}
 
 	// for browsers that don't support animation, place box at intended end position
@@ -98,7 +98,7 @@ a {
 	}
 }
 
-@include keyframes('boxanimation') {
+@include keyframes(boxanimation) {
 	20% {
 		left: 40px;
 		top: 310px;
@@ -124,7 +124,7 @@ a {
 .boxtransition2 {
 	background: #f2df7e;
 	left: ($boxLeft + $boxGap);
-	@include transition('background 0.5s linear,top 0.5s ease-in');
+	@include transition(background 0.5s linear,top 0.5s ease-in);
 
 	&.move {
 		background: #314a59;
