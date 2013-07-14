@@ -1,6 +1,8 @@
 // simple console messaging system for browsers without native support
 (function(win) {
 
+	'use strict';
+
 	var consoleFauxEl,
 		fauxConsoleLog,
 		groupName,
