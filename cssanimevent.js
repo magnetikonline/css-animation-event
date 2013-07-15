@@ -2,7 +2,11 @@
 
 	'use strict';
 
-	var docEl = document.documentElement,
+	var TRIM_REGEXP = /^\s+|\s+$/g,
+		CLASS_NAME_ANIM_ACTIVE_KEY = ' cssanimactive cssanim',
+		CLASS_NAME_ANIMID_REGEXP = new RegExp(CLASS_NAME_ANIM_ACTIVE_KEY + '([0-9]+)( |$)'),
+		IS_OPERA_EVENT_TYPE_REGEXP = /^o(A|T)/,
+		docEl = document.documentElement,
 		isDetected,
 		animationSupport,
 		animationEventTypeStart,
@@ -12,12 +16,7 @@
 		transitionSupport,
 		transitionEventTypeEnd,
 		transitionEndHandlerCollection,
-		nextAnimId = 0,
-
-		trimRegExp = /^\s+|\s+$/g,
-		classNameAnimActiveKey = ' cssanimactive cssanim',
-		classNameAnimIdRegExp = new RegExp(classNameAnimActiveKey + '([0-9]+)( |$)'),
-		isOperaEventTypeRegExp = /^o(A|T)/;
+		nextAnimId = 0;
 
 	function detect() {
 
@@ -27,13 +26,13 @@
 
 		// collection of animation/transition style properties per browser engine and matching DOM events
 		// non-prefixed properties are intentionally checked first
-		var animationDetectList = [
+		var ANIMATION_DETECT_LIST = [
 				['animation','animationstart','animationiteration','animationend'],
 				['MozAnimation','mozAnimationStart','mozAnimationIteration','mozAnimationEnd'],
 				['OAnimation','oAnimationStart','oAnimationIteration','oAnimationEnd'],
 				['webkitAnimation','webkitAnimationStart','webkitAnimationIteration','webkitAnimationEnd']
 			],
-			transitionDetectList = [
+			TRANSITION_DETECT_LIST = [
 				['transition','transitionend'],
 				['MozTransition','mozTransitionEnd'],
 				['OTransition','oTransitionEnd'],
@@ -52,7 +51,7 @@
 		}
 
 		// animation support
-		detectHandle(animationDetectList,function(item) {
+		detectHandle(ANIMATION_DETECT_LIST,function(item) {
 
 			animationSupport = true;
 			animationEventTypeStart = item[1];
@@ -61,7 +60,7 @@
 		});
 
 		// transition support
-		detectHandle(transitionDetectList,function(item) {
+		detectHandle(TRANSITION_DETECT_LIST,function(item) {
 
 			transitionSupport = true;
 			transitionEventTypeEnd = item[1];
@@ -71,7 +70,7 @@
 	function addEvent(obj,type,handler) {
 
 		obj.addEventListener(type,handler,false);
-		if (isOperaEventTypeRegExp.test(type)) {
+		if (IS_OPERA_EVENT_TYPE_REGEXP.test(type)) {
 			// some earlier versions of Opera (Presto) need lowercased event names
 			obj.addEventListener(type.toLowerCase(),handler,false);
 		}
@@ -82,7 +81,7 @@
 	function removeEvent(obj,type,handler) {
 
 		obj.removeEventListener(type,handler,false);
-		if (isOperaEventTypeRegExp.test(type)) {
+		if (IS_OPERA_EVENT_TYPE_REGEXP.test(type)) {
 			// some earlier versions of Opera (Presto) need lowercased event names
 			obj.removeEventListener(type.toLowerCase(),handler,false);
 		}
@@ -93,7 +92,7 @@
 	function getElAnimId(el) {
 
 		// look for animation ID class identifier
-		var match = classNameAnimIdRegExp.exec(' ' + el.className);
+		var match = CLASS_NAME_ANIMID_REGEXP.exec(' ' + el.className);
 		return (match) ? (match[1] * 1) : false; // cast as integer
 	}
 
@@ -102,8 +101,8 @@
 		// remove animation ID class identifer from element
 		el.className =
 			(' ' + el.className + ' ').
-			replace(classNameAnimActiveKey + animId + ' ',' ').
-			replace(trimRegExp,'');
+			replace(CLASS_NAME_ANIM_ACTIVE_KEY + animId + ' ',' ').
+			replace(TRIM_REGEXP,'');
 	}
 
 	function removeAnimItem(handlerCollection,el) {
@@ -152,8 +151,8 @@
 
 			// add animation ID class identifer to element
 			el.className =
-				(el.className + classNameAnimActiveKey + nextAnimId).
-				replace(trimRegExp,'');
+				(el.className + CLASS_NAME_ANIM_ACTIVE_KEY + nextAnimId).
+				replace(TRIM_REGEXP,'');
 
 			// add item to handler collection
 			handlerCollection[nextAnimId++] = [handler,el,data];
