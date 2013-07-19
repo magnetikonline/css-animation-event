@@ -5,7 +5,7 @@
 	var TRIM_REGEXP = /^\s+|\s+$/g,
 		CLASS_NAME_ANIM_ACTIVE_KEY = ' cssanimactive cssanim',
 		CLASS_NAME_ANIMID_REGEXP = new RegExp(CLASS_NAME_ANIM_ACTIVE_KEY + '([0-9]+)( |$)'),
-		IS_OPERA_EVENT_TYPE_REGEXP = /^o(A|T)/,
+		IS_OPERA_EVENT_TYPE_REGEXP = /^o[AT]/,
 		docEl = document.documentElement,
 		isDetected,
 		animationSupport,
