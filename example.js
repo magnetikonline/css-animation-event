@@ -1,10 +1,10 @@
-(function(win) {
+(function(win,doc) {
 
 	'use strict';
 
 	function $(id) {
 
-		return document.getElementById(id);
+		return doc.getElementById(id);
 	}
 
 	function addEvent(obj,type,handler) {
@@ -38,7 +38,7 @@
 				// start first box transition
 				startTransition1();
 			},
-			{ random: 'data' }
+			{ random: 'animData' }
 		);
 
 		//CSSAnimEvent.cancelAnimationEnd($('boxanim'));
@@ -61,7 +61,7 @@
 				// start second box transition
 				startTransition2();
 			},
-			{ random: 'data' }
+			{ random: 'transData1' }
 		);
 
 		//CSSAnimEvent.cancelTransitionEnd($('boxtran1'));
@@ -71,7 +71,7 @@
 
 		$('boxtran2').className += ' move';
 
-		// onTransitionEnd() hook #1
+		// onTransitionEnd() hook #2
 		CSSAnimEvent.onTransitionEnd(
 			$('boxtran2'),
 			function(el,data) {
@@ -83,7 +83,7 @@
 
 				console.log('Finished!');
 			},
-			{ random: 'data' }
+			{ random: 'transData2' }
 		);
 
 		//CSSAnimEvent.cancelTransitionEnd($('boxtran2'));
@@ -102,4 +102,4 @@
 			addEvent($('startexample'),'click',startAnimation);
 		}
 	);
-})(window);
+})(window,document);

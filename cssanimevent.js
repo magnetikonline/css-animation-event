@@ -1,22 +1,20 @@
-(function(win,undefined) {
+(function(win,docEl,undefined) {
 
 	'use strict';
 
 	var TRIM_REGEXP = /^\s+|\s+$/g,
-		CLASS_NAME_ANIM_ACTIVE_KEY = ' cssanimactive cssanim',
-		CLASS_NAME_ANIMID_REGEXP = new RegExp(CLASS_NAME_ANIM_ACTIVE_KEY + '([0-9]+)( |$)'),
+		CLASS_NAME_ANIM_ACTIVE = ' cssanimactive',
 		IS_OPERA_EVENT_TYPE_REGEXP = /^o[AT]/,
-		docEl = document.documentElement,
+		HANDLER_LIST_INDEX_ANIMATION = 0,
+		HANDLER_LIST_INDEX_TRANSITION = 1,
 		isDetected,
 		animationSupport,
 		animationEventTypeStart,
 		animationEventTypeIteration,
 		animationEventTypeEnd,
-		animationEndHandlerCollection,
 		transitionSupport,
 		transitionEventTypeEnd,
-		transitionEndHandlerCollection,
-		nextAnimId = 0;
+		handlerList = [undefined,undefined];
 
 	function detect() {
 
@@ -24,8 +22,8 @@
 		if (isDetected) return;
 		isDetected = true;
 
-		// collection of animation/transition style properties per browser engine and matching DOM events
-		// non-prefixed properties are intentionally checked first
+		// list of animation/transition style properties per browser engine and matching DOM event names
+		// the non-prefixed properties are intentionally checked first
 		var ANIMATION_DETECT_LIST = [
 				['animation','animationstart','animationiteration','animationend'],
 				['MozAnimation','mozAnimationStart','mozAnimationIteration','mozAnimationEnd'],
@@ -89,77 +87,74 @@
 		return true;
 	}
 
-	function getElAnimId(el) {
+	function getElHandlerListIndex(handlerIndex,el) {
 
-		// look for animation ID class identifier
-		var match = CLASS_NAME_ANIMID_REGEXP.exec(' ' + el.className);
-		return (match) ? (match[1] * 1) : false; // cast as integer
+		var seekList = handlerList[handlerIndex];
+		if (seekList !== undefined) {
+			for (var index = 0,handlerItem;handlerItem = seekList[index];index++) {
+				if (handlerItem[0] == el) {
+					// found element in handler list
+					return index;
+				}
+			}
+		}
+
+		// not found
+		return false;
 	}
 
-	function removeElAnimId(el,animId) {
+	function removeElHandlerItem(handlerIndex,el,index) {
 
-		// remove animation ID class identifer from element
-		el.className =
-			(' ' + el.className + ' ').
-			replace(CLASS_NAME_ANIM_ACTIVE_KEY + animId + ' ',' ').
-			replace(TRIM_REGEXP,'');
+		// if index to remove has been given, don't call getElHandlerListIndex()
+		if (index === undefined) index = getElHandlerListIndex(handlerIndex,el);
+
+		if (index !== false) {
+			// found element in list, remove from handler list array
+			handlerList[handlerIndex].splice(index,1);
+
+			// drop the 'animation active' class from element
+			el.className =
+				(' ' + el.className + ' ').
+				replace(CLASS_NAME_ANIM_ACTIVE + ' ',' ').
+				replace(TRIM_REGEXP,'');
+		}
 	}
 
-	function removeAnimItem(handlerCollection,el) {
-
-		// DOM element has an animation ID?
-		var animId = getElAnimId(el);
-		if (animId === false) return;
-
-		// remove animation ID from element and handler collection
-		removeElAnimId(el,animId);
-		delete handlerCollection[animId];
-	}
-
-	function onEndProcess(hasSupport,eventTypeEnd,handlerCollection,el,handler,data) {
+	function onEndProcess(hasSupport,eventTypeEnd,handlerIndex,el,handler,data) {
 
 		if (!hasSupport) {
 			// no CSS animation/transition support, call handler right away
 			setTimeout(function() { handler(el,data); });
 
 		} else {
-			if (!handlerCollection) {
+			if (!handlerList[handlerIndex]) {
 				// setup end handler
-				handlerCollection = {};
+				handlerList[handlerIndex] = [];
 				addEvent(docEl,eventTypeEnd,function(event) {
 
 					// ensure event returned the target element
 					if (!event || !event.target) return;
 
-					// get element animation id - exit if not found
+					// get the element handler list index - skip over event if not found
 					var targetEl = event.target,
-						animId = getElAnimId(targetEl);
+						index = getElHandlerListIndex(handlerIndex,targetEl);
 
-					if (animId === false) return;
-					removeElAnimId(targetEl,animId);
-
-					// execute handler then remove from collection
-					var item = handlerCollection[animId];
-					if (item) item[0](item[1],item[2]);
-
-					delete handlerCollection[animId];
+					if (index !== false) {
+						// execute handler then remove from handler list
+						var handlerItem = handlerList[handlerIndex][index];
+						removeElHandlerItem(handlerIndex,targetEl,index);
+						handlerItem[1](targetEl,handlerItem[2]);
+					}
 				});
 			}
 
-			// remove possible existing transition end handler and setup new end handler
-			removeAnimItem(handlerCollection,el);
+			// remove (possible) existing end handler
+			removeElHandlerItem(handlerIndex,el);
 
-			// add animation ID class identifer to element
-			el.className =
-				(el.className + CLASS_NAME_ANIM_ACTIVE_KEY + nextAnimId).
-				replace(TRIM_REGEXP,'');
-
-			// add item to handler collection
-			handlerCollection[nextAnimId++] = [handler,el,data];
+			// add element to handler list and a 'animation active' class identifier
+			handlerList[handlerIndex].push([el,handler,data]);
+			el.className = (el.className + CLASS_NAME_ANIM_ACTIVE).replace(TRIM_REGEXP,'');
 		}
-
-		// important handlerCollection is returned since we create a new object for the collection in this function
-		return handlerCollection;
 	}
 
 	win.CSSAnimEvent = {
@@ -226,31 +221,31 @@
 		onAnimationEnd: function(el,handler,data) {
 
 			detect();
-			animationEndHandlerCollection = onEndProcess(
+			onEndProcess(
 				animationSupport,animationEventTypeEnd,
-				animationEndHandlerCollection,
+				HANDLER_LIST_INDEX_ANIMATION,
 				el,handler,data
 			);
 		},
 
 		cancelAnimationEnd: function(el) {
 
-			removeAnimItem(animationEndHandlerCollection,el);
+			removeElHandlerItem(HANDLER_LIST_INDEX_ANIMATION,el);
 		},
 
 		onTransitionEnd: function(el,handler,data) {
 
 			detect();
-			transitionEndHandlerCollection = onEndProcess(
+			onEndProcess(
 				transitionSupport,transitionEventTypeEnd,
-				transitionEndHandlerCollection,
+				HANDLER_LIST_INDEX_TRANSITION,
 				el,handler,data
 			);
 		},
 
 		cancelTransitionEnd: function(el) {
 
-			removeAnimItem(transitionEndHandlerCollection,el);
+			removeElHandlerItem(HANDLER_LIST_INDEX_TRANSITION,el);
 		}
 	};
-})(window);
+})(window,document.documentElement);
