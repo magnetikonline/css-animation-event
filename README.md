@@ -1,14 +1,14 @@
 # CSS animation event
-A very small (approx **850 bytes** minified and gzip) cross browser compatible library to handle CSS3 animation and transition DOM events with a fall back pattern for unsupported browsers. Tested successfully with Google Chrome, Firefox, Opera (Presto) and IE10.
+A very small (approx **820 bytes** minified and gzip) cross browser compatible library to handle CSS3 animation and transition DOM events with a fall back pattern for unsupported browsers. Tested successfully with Google Chrome, Firefox, Opera (Presto) and IE10.
 
 - [Usage](#usage)
 - [Example](#example)
 - [Methods](#methods)
 
 ## Why?
-The CSS3 [animation](http://www.w3.org/TR/css3-animations/) and [transition](http://www.w3.org/TR/css3-transitions/) modules both provide some rather useful DOM events which can be used to track the current state of an animation/transition from within your JavaScript for chaining further application logic as they progress and complete.
+The CSS3 [animation](http://www.w3.org/TR/css3-animations/) and [transition](http://www.w3.org/TR/css3-transitions/) modules both provide some rather useful DOM events which can be used to track the current state of an animation or transition - extremely useful for chaining future application logic as they progress and complete.
 
-Whilst support for these event types is (thankfully) provided in virtually every browser that offers CSS3 animations and transitions, as a front-end developer you are still left with the issue of coding alternative program flow around browsers that don't support these CSS3 modules and therefore won't fire your animation/transition events.
+Whilst support for these event types is (thankfully) provided in virtually every browser that offers CSS3 [animations](http://caniuse.com/css-animation) and [transitions](http://caniuse.com/css-transitions), as a front-end developer you are still left with the issue of coding alternative program flow around browsers that don't support these CSS3 modules and therefore won't fire your animation/transition events.
 
 Consider the following example:
 
@@ -72,9 +72,9 @@ function nextUIStep() {
 
 One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` create 'one shot' event handlers and should be called *just after* CSS updates have been applied to the element, allowing instant delegation back to the given callback handler for unsupported browsers.
 
-Internally `CSSAnimEvent` attaches singular `animationend` and `transitionend` event handlers on the documents `<html/>` element and delegates to given callbacks as required.
+Internally `CSSAnimEvent` attaches singular `animationend` and `transitionend` event handlers to the `<html/>` element and delegates to given callbacks as required.
 
-Using CSS3 `animation/@keyframes` is *slightly* more work since animated elements will never reach their keyframe target with unsupported browsers, but a little CSS/JavaScript can handle this situation:
+Using CSS3 `animation/@keyframes` is *slightly* more work since animated elements will never reach their intended keyframe target within unsupported browsers, but a little CSS/JavaScript can handle this situation:
 
 ```css
 @keyframes myanimation {
@@ -122,15 +122,14 @@ View a very [basic example of this in action](http://magnetikonline.github.io/cs
 
 For capable browsers the tweens will run as expected - alternatively the DOM elements will update instantly from start to finish, via the same event handler execution flow.
 
-`CSSAnimEvent` implements CSS class identifiers on watched elements to uniquely identify them when animation/transition events are raised by the DOM. This provides a handy CSS styling hook; `cssanimactive`, which can be used for specific styling applied only during the animation/transition timeframe.
+As a small bonus, `CSSAnimEvent` also adds a handy CSS styling hook; `cssanimactive`, which can be used for specific styling which is applied *only* during the animation/transition period.
 
 ```html
 <!-- our element before onAnimationEnd()/onTransitionEnd() -->
 <div id="movethis" class="movethis-basestyle">
 
 <!-- our element after onAnimationEnd()/onTransitionEnd() called -->
-<!-- Note: 'cssanim123' is the ascending ID assigned and used by CSSAnimEvent on each element -->
-<div id="movethis" class="movethis-basestyle cssanimactive cssanim123">
+<div id="movethis" class="movethis-basestyle cssanimactive">
 
 <!-- and finally, once the animation/transition ends -->
 <div id="movethis" class="movethis-basestyle">
