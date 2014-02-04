@@ -91,8 +91,8 @@
 
 		var seekList = handlerList[handlerIndex];
 		if (seekList !== undefined) {
-			for (var index = 0,handlerItem;handlerItem = seekList[index];index++) {
-				if (handlerItem[0] == el) {
+			for (var index = seekList.length - 1;index >= 0;index--) {
+				if (seekList[index][0] == el) {
 					// found element in handler list
 					return index;
 				}
