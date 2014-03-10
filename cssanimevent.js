@@ -133,22 +133,22 @@
 				addEvent(docEl,eventTypeEnd,function(event) {
 
 					// ensure event returned the target element
-					if (!event || !event.target) return;
+					if (event.target) {
+						// get the element handler list index - skip over event if not found
+						var targetEl = event.target,
+							index = getElHandlerListIndex(handlerIndex,targetEl);
 
-					// get the element handler list index - skip over event if not found
-					var targetEl = event.target,
-						index = getElHandlerListIndex(handlerIndex,targetEl);
-
-					if (index !== false) {
-						// execute handler then remove from handler list
-						var handlerItem = handlerList[handlerIndex][index];
-						removeElHandlerItem(handlerIndex,targetEl,index);
-						handlerItem[1](targetEl,handlerItem[2]);
+						if (index !== false) {
+							// execute handler then remove from handler list
+							var handlerItem = handlerList[handlerIndex][index];
+							removeElHandlerItem(handlerIndex,targetEl,index);
+							handlerItem[1](targetEl,handlerItem[2]);
+						}
 					}
 				});
 			}
 
-			// remove (possible) existing end handler
+			// remove possible existing end handler associated to element
 			removeElHandlerItem(handlerIndex,el);
 
 			// add element to handler list and a 'animation active' class identifier
