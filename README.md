@@ -4,6 +4,16 @@ A very small (approx **820 bytes** minified and gzip) cross browser compatible l
 - [Usage](#usage)
 - [Example](#example)
 - [Methods](#methods)
+	- [onAnimationEnd(element,handler[,data])](#onanimationendelementhandlerdata)
+	- [cancelAnimationEnd(element)](#cancelanimationendelement)
+	- [onTransitionEnd(element,handler[,data])](#ontransitionendelementhandlerdata)
+	- [cancelTransitionEnd(element)](#canceltransitionendelement)
+	- [animationSupport()](#animationsupport)
+	- [transitionSupport()](#transitionsupport)
+	- [addAnimation{Start|Iteration|End}(element,handler)](#addanimationstartiterationendelementhandler)
+	- [removeAnimation{Start|Iteration|End}(element,handler)](#removeanimationstartiterationendelementhandler)
+	- [addTransitionEnd(element,handler)](#addtransitionendelementhandler)
+	- [removeTransitionEnd(element,handler)](#removetransitionendelementhandler)
 
 ## Why?
 The CSS3 [animation](http://www.w3.org/TR/css3-animations/) and [transition](http://www.w3.org/TR/css3-transitions/) modules both provide some rather useful DOM events which can be used to track the current state of an animation or transition - extremely useful for chaining future application logic as they progress and complete.
