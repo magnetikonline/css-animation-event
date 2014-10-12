@@ -8,11 +8,9 @@
 		HANDLER_LIST_INDEX_ANIMATION = 0,
 		HANDLER_LIST_INDEX_TRANSITION = 1,
 		isDetected,
-		animationSupport,
 		animationEventTypeStart,
 		animationEventTypeIteration,
 		animationEventTypeEnd,
-		transitionSupport,
 		transitionEventTypeEnd,
 		handlerList = [undefined,undefined];
 
@@ -48,19 +46,17 @@
 			}
 		}
 
-		// animation support
+		// animation support?
 		detectHandle(ANIMATION_DETECT_LIST,function(item) {
 
-			animationSupport = true;
 			animationEventTypeStart = item[1];
 			animationEventTypeIteration = item[2];
 			animationEventTypeEnd = item[3];
 		});
 
-		// transition support
+		// transition support?
 		detectHandle(TRANSITION_DETECT_LIST,function(item) {
 
-			transitionSupport = true;
 			transitionEventTypeEnd = item[1];
 		});
 	}
@@ -93,13 +89,13 @@
 		if (seekList !== undefined) {
 			for (var index = seekList.length - 1;index >= 0;index--) {
 				if (seekList[index][0] == el) {
-					// found element in handler list
+					// found element, return numeric index
 					return index;
 				}
 			}
 		}
 
-		// not found
+		// element not found in handler list
 		return false;
 	}
 
@@ -120,9 +116,9 @@
 		}
 	}
 
-	function onEndProcess(hasSupport,eventTypeEnd,handlerIndex,el,handler,data) {
+	function onEndProcess(eventTypeEnd,handlerIndex,el,handler,data) {
 
-		if (!hasSupport) {
+		if (eventTypeEnd === undefined) {
 			// no CSS animation/transition support, call handler right away
 			setTimeout(function() { handler(el,data); });
 
@@ -151,7 +147,7 @@
 			// remove possible existing end handler associated to element
 			removeElHandlerItem(handlerIndex,el);
 
-			// add element to handler list and a 'animation active' class identifier
+			// add element to handler list and a 'animation active' class identifier to the target element
 			handlerList[handlerIndex].push([el,handler,data]);
 			el.className = (el.className + CLASS_NAME_ANIM_ACTIVE).replace(TRIM_REGEXP,'');
 		}
@@ -161,68 +157,68 @@
 		animationSupport: function() {
 
 			detect();
-			return !!animationSupport;
+			return !!animationEventTypeEnd;
 		},
 
 		transitionSupport: function() {
 
 			detect();
-			return !!transitionSupport;
+			return !!transitionEventTypeEnd;
 		},
 
 		addAnimationStart: function(el,handler) {
 
 			detect();
-			return (animationSupport) ? addEvent(el,animationEventTypeStart,handler) : false;
+			return (animationEventTypeStart) ? addEvent(el,animationEventTypeStart,handler) : false;
 		},
 
 		removeAnimationStart: function(el,handler) {
 
 			detect();
-			return (animationSupport) ? removeEvent(el,animationEventTypeStart,handler) : false;
+			return (animationEventTypeStart) ? removeEvent(el,animationEventTypeStart,handler) : false;
 		},
 
 		addAnimationIteration: function(el,handler) {
 
 			detect();
-			return (animationSupport) ? addEvent(el,animationEventTypeIteration,handler) : false;
+			return (animationEventTypeIteration) ? addEvent(el,animationEventTypeIteration,handler) : false;
 		},
 
 		removeAnimationIteration: function(el,handler) {
 
 			detect();
-			return (animationSupport) ? removeEvent(el,animationEventTypeIteration,handler) : false;
+			return (animationEventTypeIteration) ? removeEvent(el,animationEventTypeIteration,handler) : false;
 		},
 
 		addAnimationEnd: function(el,handler) {
 
 			detect();
-			return (animationSupport) ? addEvent(el,animationEventTypeEnd,handler) : false;
+			return (animationEventTypeEnd) ? addEvent(el,animationEventTypeEnd,handler) : false;
 		},
 
 		removeAnimationEnd: function(el,handler) {
 
 			detect();
-			return (animationSupport) ? removeEvent(el,animationEventTypeEnd,handler) : false;
+			return (animationEventTypeEnd) ? removeEvent(el,animationEventTypeEnd,handler) : false;
 		},
 
 		addTransitionEnd: function(el,handler) {
 
 			detect();
-			return (transitionSupport) ? addEvent(el,transitionEventTypeEnd,handler) : false;
+			return (transitionEventTypeEnd) ? addEvent(el,transitionEventTypeEnd,handler) : false;
 		},
 
 		removeTransitionEnd: function(el,handler) {
 
 			detect();
-			return (transitionSupport) ? removeEvent(el,transitionEventTypeEnd,handler) : false;
+			return (transitionEventTypeEnd) ? removeEvent(el,transitionEventTypeEnd,handler) : false;
 		},
 
 		onAnimationEnd: function(el,handler,data) {
 
 			detect();
 			onEndProcess(
-				animationSupport,animationEventTypeEnd,
+				animationEventTypeEnd,
 				HANDLER_LIST_INDEX_ANIMATION,
 				el,handler,data
 			);
@@ -237,7 +233,7 @@
 
 			detect();
 			onEndProcess(
-				transitionSupport,transitionEventTypeEnd,
+				transitionEventTypeEnd,
 				HANDLER_LIST_INDEX_TRANSITION,
 				el,handler,data
 			);
