@@ -149,7 +149,7 @@
 
 			// add element to handler list and a 'animation active' class identifier to the target element
 			handlerList[handlerIndex].push([el,handler,data]);
-			el.className = (el.className + CLASS_NAME_ANIM_ACTIVE).replace(TRIM_REGEXP,'');
+			el.className = el.className.replace(TRIM_REGEXP,'') + CLASS_NAME_ANIM_ACTIVE;
 		}
 	}
 
