@@ -5,21 +5,18 @@ $boxTopEnd: 500px;
 
 // -- mixins for CSS animation/transition --
 @mixin animation($value) {
-	-moz-animation: $value;
 	-o-animation: $value;
 	-webkit-animation: $value;
 	animation: $value;
 }
 
 @mixin keyframes($name) {
-	@-moz-keyframes $name { @content; }
-	@-o-keyframes $name { @content; }
-	@-webkit-keyframes $name { @content; }
-	@keyframes $name { @content; }
+	@-o-keyframes #{$name} { @content; }
+	@-webkit-keyframes #{$name} { @content; }
+	@keyframes #{$name} { @content; }
 }
 
 @mixin transition($value...) {
-	-moz-transition: $value;
 	-o-transition: $value;
 	-webkit-transition: $value;
 	transition: $value;
@@ -96,26 +93,28 @@ a {
 		left: $boxLeft;
 		top: $boxTopEnd;
 	}
-}
 
-@include keyframes(boxanimation) {
-	20% {
-		left: 40px;
-		top: 310px;
-	}
+	@at-root {
+		@include keyframes(boxanimation) {
+			20% {
+				left: 40px;
+				top: 310px;
+			}
 
-	40% {
-		left: 140px;
-		top: 400px;
-	}
+			40% {
+				left: 140px;
+				top: 400px;
+			}
 
-	60% {
-		background: #ffc787;
-	}
+			60% {
+				background: #ffc787;
+			}
 
-	100% {
-		background: #e89041;
-		top: $boxTopEnd;
+			100% {
+				background: #e89041;
+				top: $boxTopEnd;
+			}
+		}
 	}
 }
 

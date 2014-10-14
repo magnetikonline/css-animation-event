@@ -1,5 +1,5 @@
 # CSS animation event
-A very small (approx **820 bytes** minified and gzip) cross browser compatible library to handle CSS3 animation and transition DOM events with a fall back pattern for unsupported browsers. Tested successfully with Google Chrome, Firefox, Opera (Presto) and IE10.
+A very small (approx **840 bytes** minified and gzipped) cross browser compatible library to handle CSS3 animation and transition DOM events with a fall back pattern for unsupported browsers. Tested successfully with Google Chrome, Firefox, Opera (Presto) and IE10.
 
 - [Usage](#usage)
 - [Example](#example)
@@ -139,7 +139,7 @@ As a small bonus, `CSSAnimEvent` also adds a handy CSS styling hook; `cssanimact
 <div id="movethis" class="movethis-basestyle">
 
 <!-- our element after onAnimationEnd()/onTransitionEnd() called -->
-<div id="movethis" class="movethis-basestyle cssanimactive">
+<div id="movethis" class="movethis-basestyle cssanimactive" data-cssanimid="ID">
 
 <!-- and finally, once the animation/transition ends -->
 <div id="movethis" class="movethis-basestyle">
