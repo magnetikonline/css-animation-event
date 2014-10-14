@@ -3,6 +3,8 @@
 	'use strict';
 
 	var TRIM_REGEXP = /^\s+|\s+$/g,
+		DATA_ATTRIBUTE_HANDLER_ID = 'cssanimid',
+		DATA_ATTRIBUTE_HANDLER_ID_PREFIXED = 'data-' + DATA_ATTRIBUTE_HANDLER_ID,
 		CLASS_NAME_ANIM_ACTIVE = ' cssanimactive',
 		IS_OPERA_EVENT_TYPE_REGEXP = /^o[AT]/,
 		HANDLER_LIST_INDEX_ANIMATION = 0,
@@ -12,7 +14,8 @@
 		animationEventTypeIteration,
 		animationEventTypeEnd,
 		transitionEventTypeEnd,
-		handlerList = [undefined,undefined];
+		nextHandlerID = 0,
+		handlerCollection = [undefined,undefined];
 
 	function detect() {
 
@@ -20,7 +23,7 @@
 		if (isDetected) return;
 		isDetected = true;
 
-		// list of animation/transition style properties per browser engine and matching DOM event names
+		// list of animation/transition properties per browser engine and matching DOM event names
 		// the non-prefixed properties are intentionally checked first
 		var ANIMATION_DETECT_LIST = [
 				['animation','animationstart','animationiteration','animationend'],
@@ -65,7 +68,7 @@
 
 		obj.addEventListener(type,handler,false);
 		if (IS_OPERA_EVENT_TYPE_REGEXP.test(type)) {
-			// some earlier versions of Opera (Presto) need lowercased event names
+			// some earlier versions of Opera (Presto) raise lowercased event names
 			obj.addEventListener(type.toLowerCase(),handler,false);
 		}
 
@@ -76,39 +79,40 @@
 
 		obj.removeEventListener(type,handler,false);
 		if (IS_OPERA_EVENT_TYPE_REGEXP.test(type)) {
-			// some earlier versions of Opera (Presto) need lowercased event names
+			// some earlier versions of Opera (Presto) raise lowercased event names
 			obj.removeEventListener(type.toLowerCase(),handler,false);
 		}
 
 		return true;
 	}
 
-	function getElHandlerListIndex(handlerIndex,el) {
+	function getElHandlerCollectionID(handlerIndex,el) {
 
-		var seekList = handlerList[handlerIndex];
-		if (seekList !== undefined) {
-			for (var index = seekList.length - 1;index >= 0;index--) {
-				if (seekList[index][0] == el) {
-					// found element, return numeric index
-					return index;
-				}
-			}
-		}
+		var handlerID = (el.hasAttribute(DATA_ATTRIBUTE_HANDLER_ID_PREFIXED))
+			? el.getAttribute(DATA_ATTRIBUTE_HANDLER_ID_PREFIXED)
+			: null;
 
-		// element not found in handler list
-		return false;
+		return (
+			(handlerID !== null) &&
+			(handlerCollection[handlerIndex][handlerID] !== undefined)
+		)
+			// found element in collection, return handlerID
+			? handlerID
+			// not found
+			: false;
 	}
 
-	function removeElHandlerItem(handlerIndex,el,index) {
+	function removeElHandlerItem(handlerIndex,el,handlerID) {
 
-		// if index to remove has been given, don't call getElHandlerListIndex()
-		if (index === undefined) index = getElHandlerListIndex(handlerIndex,el);
+		// if handlerID to remove has been given, don't call getElHandlerCollectionID()
+		if (handlerID === undefined) handlerID = getElHandlerCollectionID(handlerIndex,el);
 
-		if (index !== false) {
-			// found element in list, remove from handler list array
-			handlerList[handlerIndex].splice(index,1);
+		if (handlerID !== false) {
+			// found element in collection, now remove
+			delete handlerCollection[handlerIndex][handlerID];
 
-			// drop the 'animation active' class from element
+			// drop data-* attribute and 'animation active' class from element
+			el.removeAttribute(DATA_ATTRIBUTE_HANDLER_ID_PREFIXED);
 			el.className =
 				(' ' + el.className + ' ').
 				replace(CLASS_NAME_ANIM_ACTIVE + ' ',' ').
@@ -123,22 +127,22 @@
 			setTimeout(function() { handler(el,data); });
 
 		} else {
-			if (!handlerList[handlerIndex]) {
+			if (!handlerCollection[handlerIndex]) {
 				// setup end handler
-				handlerList[handlerIndex] = [];
+				handlerCollection[handlerIndex] = {};
 				addEvent(docEl,eventTypeEnd,function(event) {
 
 					// ensure event returned the target element
 					if (event.target) {
-						// get the element handler list index - skip over event if not found
+						// get the element handler list ID - skip over if not found
 						var targetEl = event.target,
-							index = getElHandlerListIndex(handlerIndex,targetEl);
+							handlerID = getElHandlerCollectionID(handlerIndex,targetEl);
 
-						if (index !== false) {
+						if (handlerID !== false) {
 							// execute handler then remove from handler list
-							var handlerItem = handlerList[handlerIndex][index];
-							removeElHandlerItem(handlerIndex,targetEl,index);
-							handlerItem[1](targetEl,handlerItem[2]);
+							var handlerItem = handlerCollection[handlerIndex][handlerID];
+							removeElHandlerItem(handlerIndex,targetEl,handlerID);
+							handlerItem[0](targetEl,handlerItem[1]);
 						}
 					}
 				});
@@ -148,7 +152,9 @@
 			removeElHandlerItem(handlerIndex,el);
 
 			// add element to handler list and a 'animation active' class identifier to the target element
-			handlerList[handlerIndex].push([el,handler,data]);
+			nextHandlerID++;
+			el.setAttribute(DATA_ATTRIBUTE_HANDLER_ID_PREFIXED,nextHandlerID);
+			handlerCollection[handlerIndex][nextHandlerID] = [handler,data];
 			el.className = el.className.replace(TRIM_REGEXP,'') + CLASS_NAME_ANIM_ACTIVE;
 		}
 	}
