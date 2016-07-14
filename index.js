@@ -23,7 +23,7 @@
 
 				console.group('Animation finished');
 				console.log(el);
-				console.log(data);
+				console.dir(data);
 				console.groupEnd();
 
 				// set final element position for browsers that don't support animations
@@ -49,7 +49,7 @@
 
 				console.group('Transition #1 finished');
 				console.log(el);
-				console.log(data);
+				console.dir(data);
 				console.groupEnd();
 
 				// start second box transition
@@ -72,7 +72,7 @@
 
 				console.group('Transition #2 finished');
 				console.log(el);
-				console.log(data);
+				console.dir(data);
 				console.groupEnd();
 
 				console.log('Finished!');
