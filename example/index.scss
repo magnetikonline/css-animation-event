@@ -1,23 +1,21 @@
 // -- variables --
 $boxLeft: 20px;
 $boxGap: 140px;
-$boxTopEnd: 500px;
+$boxEndTop: 500px;
+$boxEndBackground: #e89041;
 
 // -- mixins for CSS animation/transition --
 @mixin animation($value) {
-	-o-animation: $value;
 	-webkit-animation: $value;
 	animation: $value;
 }
 
 @mixin keyframes($name) {
-	@-o-keyframes #{$name} { @content; }
 	@-webkit-keyframes #{$name} { @content; }
 	@keyframes #{$name} { @content; }
 }
 
 @mixin transition($value...) {
-	-o-transition: $value;
 	-webkit-transition: $value;
 	transition: $value;
 }
@@ -49,14 +47,23 @@ h1 {
 }
 
 p {
-	font-size: 1.3em;
-	line-height: 1.4;
 	margin: 0 0 15px;
-	max-width: 700px;
 }
 
-p > strong {
-	white-space: nowrap;
+ul {
+	margin: 0 0 15px 15px;
+	padding: 0;
+}
+
+p,
+ul > li {
+	font-size: 1.3em;
+	line-height: 1.4;
+
+	> code {
+		font-family: monospace;
+		font-size: 100%;
+	}
 }
 
 a {
@@ -76,7 +83,7 @@ a {
 
 	// add a red box to each box as it's animating
 	&.cssanimactive {
-		border: 1px solid #f00;
+		border: 2px solid #f00;
 	}
 }
 
@@ -90,8 +97,8 @@ a {
 
 	// for browsers that don't support animation, place box at intended end position
 	&.complete {
-		left: $boxLeft;
-		top: $boxTopEnd;
+		background: $boxEndBackground;
+		top: $boxEndTop;
 	}
 
 	@at-root {
@@ -111,8 +118,8 @@ a {
 			}
 
 			100% {
-				background: #e89041;
-				top: $boxTopEnd;
+				background: $boxEndBackground;
+				top: $boxEndTop;
 			}
 		}
 	}
@@ -127,7 +134,7 @@ a {
 
 	&.move {
 		background: #314a59;
-		top: $boxTopEnd;
+		top: $boxEndTop;
 	}
 }
 

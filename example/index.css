@@ -1,15 +1,15 @@
-/* line 26, example.scss */
+/* line 24, example.scss */
 input {
   font-size: 100%;
   margin: 0; }
 
-/* line 31, example.scss */
+/* line 29, example.scss */
 body,
 input {
   color: #000;
   font-family: sans-serif; }
 
-/* line 37, example.scss */
+/* line 35, example.scss */
 body {
   background: #fff;
   font-size: 62.5%;
@@ -17,28 +17,37 @@ body {
   margin-left: 20px;
   margin-right: 20px; }
 
-/* line 45, example.scss */
+/* line 43, example.scss */
 h1 {
   font-size: 3em;
   margin: 0 0 20px;
   white-space: nowrap; }
 
-/* line 51, example.scss */
+/* line 49, example.scss */
 p {
-  font-size: 1.3em;
-  line-height: 1.4;
-  margin: 0 0 15px;
-  max-width: 700px; }
+  margin: 0 0 15px; }
+
+/* line 53, example.scss */
+ul {
+  margin: 0 0 15px 15px;
+  padding: 0; }
 
 /* line 58, example.scss */
-p > strong {
-  white-space: nowrap; }
+p,
+ul > li {
+  font-size: 1.3em;
+  line-height: 1.4; }
+  /* line 63, example.scss */
+  p > code,
+  ul > li > code {
+    font-family: monospace;
+    font-size: 100%; }
 
-/* line 62, example.scss */
+/* line 69, example.scss */
 a {
   color: #555; }
 
-/* line 67, example.scss */
+/* line 74, example.scss */
 .boxanimation,
 .boxtransition1,
 .boxtransition2 {
@@ -48,36 +57,23 @@ a {
   position: absolute;
   top: 260px;
   width: 100px; }
-  /* line 78, example.scss */
+  /* line 85, example.scss */
   .boxanimation.cssanimactive,
   .boxtransition1.cssanimactive,
   .boxtransition2.cssanimactive {
-    border: 1px solid #f00; }
+    border: 2px solid #f00; }
 
-/* line 84, example.scss */
+/* line 91, example.scss */
 .boxanimation {
   background: #b2382d; }
-  /* line 87, example.scss */
+  /* line 94, example.scss */
   .boxanimation.move {
-    -o-animation: boxanimation 1s ease-in-out 0s 3 alternate forwards;
     -webkit-animation: boxanimation 1s ease-in-out 0s 3 alternate forwards;
     animation: boxanimation 1s ease-in-out 0s 3 alternate forwards; }
-  /* line 92, example.scss */
+  /* line 99, example.scss */
   .boxanimation.complete {
-    left: 20px;
-    top: 500px; }
-@-o-keyframes boxanimation {
-  20% {
-    left: 40px;
-    top: 310px; }
-  40% {
-    left: 140px;
-    top: 400px; }
-  60% {
-    background: #ffc787; }
-  100% {
     background: #e89041;
-    top: 500px; } }
+    top: 500px; }
 @-webkit-keyframes boxanimation {
   20% {
     left: 40px;
@@ -102,20 +98,19 @@ a {
   100% {
     background: #e89041;
     top: 500px; } }
-/* line 122, example.scss */
+/* line 129, example.scss */
 .boxtransition1,
 .boxtransition2 {
   background: #f2df7e;
   left: 160px;
-  -o-transition: background 0.5s linear, top 0.5s ease-in;
   -webkit-transition: background 0.5s linear, top 0.5s ease-in;
   transition: background 0.5s linear, top 0.5s ease-in; }
-  /* line 128, example.scss */
+  /* line 135, example.scss */
   .boxtransition1.move,
   .boxtransition2.move {
     background: #314a59;
     top: 500px; }
 
-/* line 134, example.scss */
+/* line 141, example.scss */
 .boxtransition2 {
   left: 300px; }
