@@ -27,7 +27,7 @@ Library supports Internet Explorer IE9 and above, a final version with IE8 suppo
 ## Why?
 The CSS3 [animation](https://www.w3.org/TR/css3-animations/) and [transition](https://www.w3.org/TR/css3-transitions/) modules both provide useful DOM events which can be used to track the current state of an animation or transition - extremely useful for chaining future application logic as they progress and complete.
 
-Whilst support for these events is (thankfully) provided in virtually every browser that offers CSS3 [animations](http://caniuse.com/css-animation) and [transitions](http://caniuse.com/css-transitions), as a front-end developer you are still left with the issue of coding alternative program flows where support isn't available and therefore won't fire your animation/transition event handlers.
+Whilst support for these events is (thankfully) provided in virtually every browser that offers CSS3 [animations](http://caniuse.com/#feat=css-animation) and [transitions](http://caniuse.com/#feat=css-transitions), as a front-end developer you are still left with the issue of coding alternative program flows where support isn't available and therefore won't fire your animation/transition event handlers.
 
 Consider the following example:
 
@@ -65,7 +65,7 @@ function nextUIStep() {
 }
 ```
 
-Having to continually make the decision to utilise DOM events versus a fall back (`supportCSSTransitions`) throughout your UI code soon becomes clumsy and error prone.
+Having to continually make the decision to utilise DOM animation/transition events vs. a graceful fallback (via `supportCSSTransitions` in example above) throughout your UI code soon becomes clumsy and error prone.
 
 ## Usage
 [CSSAnimEvent](cssanimevent.js) manages the above situation in a different way, relying on the fact that CSS3 transitions by design fall back gracefully with unsupported browsers handling element CSS property changes as instant, with a zero transition time.
@@ -160,7 +160,7 @@ The [example](https://magnetikonline.github.io/cssanimevent/) uses this CSS styl
 All methods are under a `window.CSSAnimEvent` namespace.
 
 ### onAnimationEnd(element,handler[,data])
-Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `animationend` or instantly if CSS3 animation support is not detected.
+Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `animationend` or instantaneously if CSS3 animation support not detected.
 
 The handler will be passed the `element` that fired the event and an optional `data` payload as a second parameter.
 
@@ -170,7 +170,7 @@ The given DOM element will be decorated with a CSS class `cssanimactive`, remove
 Cancel a 'one shot' event handler set by `onAnimationEnd()` on the given DOM `element`.
 
 ### onTransitionEnd(element,handler[,data])
-Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `transitionend` or instantly if CSS3 transition support is not detected.
+Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `transitionend` or instantaneously if CSS3 transition support not detected.
 
 The handler will be passed the `element` that fired the event and an optional `data` payload as a second parameter.
 
