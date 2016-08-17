@@ -26,7 +26,7 @@
 		isDetected = true;
 
 		// list of animation/transition style properties per browser engine and matching event names
-		// note that non-prefixed properties are intentionally checked first
+		// note: non-prefixed properties are intentionally checked first
 		var ANIMATION_DETECT_COLLECTION = {
 				animation: ['animationstart','animationiteration','animationend'],
 				webkitAnimation: ['webkitAnimationStart','webkitAnimationIteration','webkitAnimationEnd']
@@ -107,29 +107,10 @@
 		}
 	}
 
-	function generateHandlerID(handlerTypeIndex) {
-
-		var handlerID;
-
-		// keep creating handler IDs until we have a unique one
-		while (!handlerID || handlerCollection[handlerTypeIndex][handlerID]) {
-			handlerID = '';
-			while (handlerID.length < HANDLER_ID_LENGTH) {
-				// append characters between [a-z] to a total of HANDLER_ID_LENGTH
-				handlerID += String.fromCharCode(
-					Math.floor(Math.random() * (HANDLER_ID_END_CHAR - HANDLER_ID_START_CHAR)) +
-					HANDLER_ID_START_CHAR
-				);
-			}
-		}
-
-		return handlerID;
-	}
-
 	function onEndProcess(eventTypeEnd,handlerTypeIndex,el,handler,data) {
 
 		if (!eventTypeEnd) {
-			// no CSS3 animation/transition support - call handler right away
+			// no animation/transition support - call handler right away
 			return setTimeout(function() { handler(el,data); });
 		}
 
@@ -157,8 +138,20 @@
 		// remove possible existing end handler associated to element
 		removeElHandlerItem(handlerTypeIndex,el);
 
+		// generate new, unique handler ID
+		var handlerID;
+		while (!handlerID || handlerCollection[handlerTypeIndex][handlerID]) {
+			handlerID = '';
+			while (handlerID.length < HANDLER_ID_LENGTH) {
+				// append characters between [a-z] to a total of HANDLER_ID_LENGTH
+				handlerID += String.fromCharCode(
+					Math.floor(Math.random() * (HANDLER_ID_END_CHAR - HANDLER_ID_START_CHAR)) +
+					HANDLER_ID_START_CHAR
+				);
+			}
+		}
+
 		// add element to handler list and a 'animation active' class identifier to the target element
-		var handlerID = generateHandlerID(handlerTypeIndex);
 		el[ELEMENT_HANDLER_ID_ATTRIBUTE] = handlerID;
 		handlerCollection[handlerTypeIndex][handlerID] = [handler,data];
 		el.className = el.className.trim() + ' ' + CLASS_NAME_ANIM_ACTIVE;
