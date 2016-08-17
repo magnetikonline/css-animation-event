@@ -1,7 +1,7 @@
 # CSS animation event
 A very small (approx **800 bytes** minified and gzipped) cross browser compatible library to handle CSS3 animation and transition DOM events with a fall back pattern for unsupported browsers.
 
-Tested successfully with CSS3 animation/transition supported browsers of:
+Tested successfully with CSS animation/transition supported browsers of:
 - Google Chrome
 - Mozilla Firefox
 - Opera (12.10+)
@@ -27,7 +27,7 @@ Library supports Internet Explorer IE9 and above, a final version with IE8 suppo
 ## Why?
 The CSS3 [animation](https://www.w3.org/TR/css3-animations/) and [transition](https://www.w3.org/TR/css3-transitions/) modules both provide useful DOM events which can be used to track the current state of an animation or transition - extremely useful for chaining future application logic as they progress and complete.
 
-Whilst support for these events is (thankfully) provided in virtually every browser that offers CSS3 [animations](http://caniuse.com/#feat=css-animation) and [transitions](http://caniuse.com/#feat=css-transitions), as a front-end developer you are still left with the issue of coding alternative program flows where support isn't available and therefore won't fire your animation/transition event handlers.
+Whilst support for these events is (thankfully) provided in virtually every browser that offers CSS [animations](http://caniuse.com/#feat=css-animation) and [transitions](http://caniuse.com/#feat=css-transitions), as a front-end developer you are still left with the issue of coding alternative program flows where support isn't available and therefore won't fire your animation/transition event handlers.
 
 Consider the following example:
 
@@ -44,7 +44,7 @@ Consider the following example:
 ```
 
 ```js
-// determineCSSTransitionSupport() would determine if browser supports CSS3 transitions
+// determineCSSTransitionSupport() would determine if browser supports CSS transitions
 var supportCSSTransitions = determineCSSTransitionSupport();
 
 // move our element
@@ -68,7 +68,7 @@ function nextUIStep() {
 Having to continually make the decision to utilise DOM animation/transition events vs. a graceful fallback (via `supportCSSTransitions` in example above) throughout your UI code soon becomes clumsy and error prone.
 
 ## Usage
-[CSSAnimEvent](cssanimevent.js) manages the above situation in a different way, relying on the fact that CSS3 transitions by design fall back gracefully with unsupported browsers handling element CSS property changes as instant, with a zero transition time.
+[CSSAnimEvent](cssanimevent.js) manages the above situation in a different way, relying on the fact that CSS transitions by design fall back gracefully with unsupported browsers handling element CSS property changes as instant, with a zero transition time.
 
 Methods `onAnimationEnd(element,handler)` and `onTransitionEnd(element,handler)` simply mimic this behaviour by instantaneously calling the given `handler` for browsers that don't provide animation and/or transition support.
 
@@ -79,7 +79,7 @@ Rewriting the above JavaScript example we can now do:
 var moveThisEl = document.getElementById('movethis');
 moveThisEl.className += ' nowmove';
 
-// Browsers supporting CSS3 transitions will call nextUIStep() after the transition ends
+// Browsers supporting CSS transitions will call nextUIStep() after the transition ends
 // ...otherwise it will be called as window.setTimeout(nextUIStep)
 CSSAnimEvent.onTransitionEnd(moveThisEl,nextUIStep);
 
@@ -93,7 +93,7 @@ One caveat to be aware of, both `onAnimationEnd()` and `onTransitionEnd()` creat
 
 Internally `CSSAnimEvent` attaches singular `animationend` and `transitionend` event handlers to the `<html/>` element and delegates to given callbacks as required.
 
-Using CSS3 `animation/@keyframes` is *slightly* more work since animated elements will never reach their intended keyframe target within unsupported browsers, but a little CSS/JavaScript can handle this situation:
+Using CSS `animation/@keyframes` is *slightly* more work since animated elements will never reach their intended keyframe target within unsupported browsers, but a little CSS/JavaScript can handle this situation:
 
 ```css
 @keyframes myanimation {
@@ -160,47 +160,41 @@ The [example](https://magnetikonline.github.io/cssanimevent/) uses this CSS styl
 All methods are under a `window.CSSAnimEvent` namespace.
 
 ### onAnimationEnd(element,handler[,data])
-Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `animationend` or instantaneously if CSS3 animation support not detected.
-
-The handler will be passed the `element` that fired the event and an optional `data` payload as a second parameter.
-
-The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon animation completion which can be used as a CSS styling hook.
+- Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `animationend` or instantaneously if CSS animation support not detected.
+- The `handler` will be passed `element` that fired the event and an optional `data` payload as a second parameter.
+- The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon animation completion which can be used as a CSS styling hook.
 
 ### cancelAnimationEnd(element)
 Cancel a 'one shot' event handler set by `onAnimationEnd()` on the given DOM `element`.
 
 ### onTransitionEnd(element,handler[,data])
-Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `transitionend` or instantaneously if CSS3 transition support not detected.
-
-The handler will be passed the `element` that fired the event and an optional `data` payload as a second parameter.
-
-The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon transition completion which can be used as a CSS styling hook.
+- Adds a 'one shot' event handler to the given DOM `element`, with `handler` executing either upon `transitionend` or instantaneously if CSS transition support not detected.
+- The `handler` will be passed `element` that fired the event and an optional `data` payload as a second parameter.
+- The given DOM element will be decorated with a CSS class `cssanimactive`, removed upon transition completion which can be used as a CSS styling hook.
 
 ### cancelTransitionEnd(element)
 Cancel a 'one shot' event handler set by `onTransitionEnd()` on the given DOM `element`.
 
 ### animationSupport()
-Returns `true` if CSS3 animation support is detected.
+Returns `true` if CSS animation support is detected.
 
 ### transitionSupport()
-Returns `true` if CSS3 transition support is detected.
+Returns `true` if CSS transition support is detected.
 
 ### addAnimation{Start|Iteration|End}(element,handler)
-Add `animation{start|iteration|end}` native events to DOM elements. Provides a handy cross browser wrapper having done browser detection for you. Does not provide faux event firing for non-supported browsers.
-
-Returns `true` where supported, `false` otherwise.
+- Add `animation{start|iteration|end}` native event handlers to DOM elements.
+- Provides a handy cross browser wrapper having done browser detection for you. Does **not** provide faux event firing for non-supported browsers.
+- Returns `true` where supported, `false` otherwise.
 
 ### removeAnimation{Start|Iteration|End}(element,handler)
-Remove `animation{start|iteration|end}` native events for above.
-
-Returns `true` where supported, otherwise `false`.
+- Remove `animation{start|iteration|end}` native event handlers for above.
+- Returns `true` where supported, otherwise `false`.
 
 ### addTransitionEnd(element,handler)
-Add `transitionend` native event to DOM elements. Provides a handy cross browser wrapper having done browser detection for you. Does not provide faux event firing for non-supported browsers.
-
-Returns `true` on success/support, `false` otherwise.
+- Add `transitionend` native event handlers to DOM elements.
+- Provides a handy cross browser wrapper having done browser detection for you. Does **not** provide faux event firing for non-supported browsers.
+- Returns `true` on success/support, `false` otherwise.
 
 ### removeTransitionEnd(element,handler)
-Remove `transitionend` native event for above.
-
-Returns `true` where supported, otherwise `false`.
+- Remove `transitionend` native event handlers for above.
+- Returns `true` where supported, otherwise `false`.
