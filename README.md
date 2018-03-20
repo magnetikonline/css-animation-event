@@ -7,7 +7,7 @@ Tested successfully with CSS animation/transition supported browsers of:
 - Opera (12.10+)
 - IE10+
 
-Library supports Internet Explorer IE9 and above, a final version with IE8 support is [tagged here](https://github.com/magnetikonline/cssanimevent/tree/ie8-final).
+Library supports Internet Explorer IE9 and above, a final version with IE8 support is [tagged here](https://github.com/magnetikonline/css-animation-event/tree/ie8-final).
 
 - [Why?](#why)
 - [Usage](#usage)
@@ -27,7 +27,7 @@ Library supports Internet Explorer IE9 and above, a final version with IE8 suppo
 ## Why?
 The CSS3 [animation](https://www.w3.org/TR/css3-animations/) and [transition](https://www.w3.org/TR/css3-transitions/) modules both provide useful DOM events which can be used to track the current state of an animation or transition - extremely useful for chaining future application logic as they progress and complete.
 
-Whilst support for these events is (thankfully) provided in virtually every browser that offers CSS [animations](http://caniuse.com/#feat=css-animation) and [transitions](http://caniuse.com/#feat=css-transitions), as a front-end developer you are still left with the issue of coding alternative program flows where support isn't available and therefore won't fire your animation/transition event handlers.
+Whilst support for these events is (thankfully) provided in virtually every browser that offers CSS [animations](https://caniuse.com/#feat=css-animation) and [transitions](https://caniuse.com/#feat=css-transitions), as a front-end developer you are still left with the issue of coding alternative program flows where support isn't available and therefore won't fire your animation/transition event handlers.
 
 Consider the following example:
 
@@ -137,7 +137,7 @@ function nextUIStep(el) {
 ```
 
 ## Example
-View a very [basic example of this in action](https://magnetikonline.github.io/cssanimevent/) using animation and transition chaining.
+View a very [basic example of this in action](https://magnetikonline.github.io/css-animation-event/) using animation and transition chaining.
 
 For capable browsers the tweens will run as expected - alternatively the DOM elements will update instantly from start to finish, via the same event handler execution flow.
 
@@ -154,7 +154,7 @@ As a small bonus, `CSSAnimEvent` also adds a handy CSS styling hook; `cssanimact
 <div id="movethis" class="movethis-basestyle">
 ```
 
-The [example](https://magnetikonline.github.io/cssanimevent/) uses this CSS styling hook to provide a red border to each box during it's animation/transition period.
+The [example](https://magnetikonline.github.io/css-animation-event/) uses this CSS styling hook to provide a red border to each box during it's animation/transition period.
 
 ## Methods
 All methods are under a `window.CSSAnimEvent` namespace.
